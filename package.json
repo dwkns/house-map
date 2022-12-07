@@ -1,0 +1,46 @@
+{
+  "name": "maps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@11ty/eleventy": "2.0.0-canary.15",
+    "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/typography": "^0.5.2",
+    "autoprefixer": "^10.4.7",
+    "cssnano": "^5.1.7",
+    "dotenv": "^16.0.1",
+    "dwkns-eleventy-plugins": "*",
+    "esbuild": "^0.15.5",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^10.0.0",
+    "rimraf": "^3.0.2",
+    "tailwindcss": "^3.0.24",
+    "tailwindcss-debug-screens": "^2.2.1"
+  },
+  "scripts": {
+    "clean": "rimraf dist build",
+    "start": "npm-run-all clean -p dev:* ",
+    "dev": "npm-run-all clean -s dev:* ",
+    "dev:postcss": "TAILWIND_MODE=watch NODE_ENV=development postcss ./src/styles/main.css -o ./src/styles/compiled.css --watch",
+    "dev:esbuild": "NODE_ENV=development esbuild src/scripts/main.js --bundle --watch --outfile=dist/scripts/main.js",
+    "dev:eleventy": "NODE_ENV=development eleventy --serve --quiet",
+    "build": "npm-run-all clean -s build:*",
+    "build:postcss": "TAILWIND_MODE=build NODE_ENV=production postcss ./src/styles/main.css -o ./src/styles/compiled.css",
+    "build:esbuild": "esbuild src/scripts/main.js --bundle --minify --sourcemap --outfile=dist/scripts/main.js",
+    "build:eleventy": "NODE_ENV=production eleventy",
+    "serve": "NODE_ENV=production npm-run-all clean -p build:* serve-static",
+    "serve-static": "npx serve dist"
+  },
+  "author": "dazza",
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "env": {
+      "es6": true,
+      "node": true
+    }
+  }
+}
