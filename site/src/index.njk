@@ -1,0 +1,47 @@
+---
+title: Page title
+layout: _regular_page.njk
+metadata:
+  title: Page title for the HEAD and OG
+  description: The page description
+og_image:
+noindex:
+sitemap:
+gmApiKey: AIzaSyBFEPMV0tsGi4ZoIEKGDUz8dZyBtvl_Am0
+---
+
+{%- from "_njk_components/components.njk" import component -%} {# Import all
+components optional: ignore missing #}
+
+<style>
+  /**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+  /* Set the size of the div element that contains the map */
+</style>
+
+{% markersAsJsObject %}
+
+<section class="dwkns-mt">
+  <div class="dwkns-container">
+    <h3>Houses</h3>
+    <!--The div element for the map -->
+    <div id="map" class="w-full h-[85vh] bg-pink-50"></div>
+
+    <!-- 
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+    -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{
+        gmApiKey
+      }}&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </div>
+</section>
