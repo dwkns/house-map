@@ -13,6 +13,28 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'rightMoveUrl',
+      title: 'Rightmove URL',
+      type: 'url',
+      // inputComponent: ImageFromUrl,
+    }),
+    defineField({
+      name: 'estateAgentUrl',
+      title: 'Estate Agent URL',
+      type: 'url',
+      // inputComponent: ImageFromUrl,
+    }),
+    defineField({
+      title: 'Launch Scheduled At',
+      name: 'launchAt',
+      type: 'datetime',
+      options: {
+        dateFormat: 'YYYY-MM-DD',
+        timeFormat: 'HH:mm',
+        timeStep: 15,
+      },
+    }),
+    defineField({
       title: 'Price in £',
       name: 'price',
       type: 'string',
@@ -30,13 +52,7 @@ export default defineType({
     defineField({
       title: 'House Location',
       name: 'location',
-      type: 'geopoint',
-    }),
-    defineField({
-      name: 'rightMoveUrl',
-      title: 'Rightmove URL',
-      type: 'url',
-      // inputComponent: ImageFromUrl,
+      type: 'string',
     }),
 
     defineField({

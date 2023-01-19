@@ -1,4 +1,5 @@
 // Initialize and add the map
+
 async function initMap() {
   // Start Location for the map
   const startLatLong = { lat: 51.837129340445784, lng: -0.41132528533835977 };
@@ -174,11 +175,8 @@ async function initMap() {
 
   const allHouseMarkers = [];
 
-  console.log(`[ markerLocations ]:`, markerLocations);
-
   markerLocations.forEach((location, index) => {
     var myLatlng = new google.maps.LatLng(location.lat, location.lng);
-
     const createHouseHTML = (location, size) => {
       let houseMarkerContainer = document.createElement("div");
       houseMarkerContainer.className = "p-0.5 speech-bubble shaddow-lg";
@@ -192,13 +190,19 @@ async function initMap() {
     const marker = new google.maps.marker.AdvancedMarkerView({
       map: location.showInFrontEnd ? map : null, // only show markers that are set to show in front end
       position: myLatlng,
-      content: createHouseHTML(location),
+      content: createHouseHTML(location, "small"),
       zIndex: index,
     });
 
-    // console.log(`[ marker ]:`, marker);
-
     marker.addListener("click", (props) => {
+      // allHouseMarkers.forEach((marker, index) => {
+      //   // reset all the markers zIndex
+      //   marker.zIndex = index;
+      // });
+
+      // set the zIndex of the clicked marker to be on top
+      // marker.zIndex = 1000;
+
       infoWindow.close();
       // Create a new InfoWindow.
       infoWindow.setContent(`

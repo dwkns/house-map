@@ -1,80 +1,55 @@
-// const sanityClient = require("./_sanityClient");
-// const BlocksToMarkdown = require("@sanity/block-content-to-markdown");
-// const portableText = require("@portabletext/to-html");
+const { Client } = require("@notionhq/client");
 
-// // console.log(`[ toHTML ]:`, portableText.toHTML());
+const getHouses = async function () {
+  // create client
+  const notion = new Client({
+    auth: process.env.NOTION_TOKEN,
+  });
 
-// // import { toHTML } from "@portabletext/to-html";
+  let houses = [];
+  // call the Notion API
+  try {
+    const response = await notion.databases.query({
+      database_id: "21b39a3add684fb7b598328d81a72318", // Articles database ID
+    });
 
-// function generatePost2(post, index) {
-//   // console.log(`[ post ${index + 1} ]:`, post);
+    console.log(`[ response ]:`, response.results.length); // how many results?
 
-//   return {
-//     ...post,
-//     body: portableText.toHTML(post.body, {
-//       components: {
-//         types: {
-//           image: ({ value }) => {
-//             // console.log(`[ value ]:`, value);
-//             return `<img src="${value.url}" />`;
-//           },
-//         },
+    // loop through the results
+    // add each result to the houses array
+    response.results.forEach((page) => {
+      // console.log(`[ page properties ]:`, page.properties.Location.rich_text);
 
-//         marks: {
-//           strong: ({ children }) => {
-//             return `<strongY>${children}</strongY>`;
-//           },
-//           em: ({ children }) => {
-//             console.log(`[ children ]:`, children);
-//             return `<span class="text--em">${children}</span>`;
-//           },
-//         },
-//       },
-//     }),
-//   };
-// }
+      // locations can be a single value or an array of values
+      // make them all arrays
+      let location = page.properties.Location.rich_text
+        .map((val) => val.plain_text)
+        .join("")
+        .split(",");
 
-const getHouses = function () {
-  //   const query = `
-  // *[ _type == "post" && !(_id in path("drafts.**")) ]{
-  //   "postSlug": customSlug.current,
-  //   postTitle,
-  //   postSummary,
-  //   publishedAt,
-  //   body[]{
-  //     _type != "image" => @,
-  //     _type == "image" => {
-  //       asset,
-  //       "_type": "image",
-  //       "url" : asset-> url,
-  //       "originalFilename": asset-> originalFilename,
-  //     },
-  //   }
-  // } | order(publishedAt desc)
-  //   `;
-  //   // groq query to get all posts that are not drafts with images assets in body dereferenced
+      houses.push({
+        title: page.properties.Name.title.map((val) => val.plain_text).join(""),
+        lat: Number(location[0]),
+        lng: Number(location[1]),
+        location: location.join(","),
+        description: "",
+        showInFrontEnd: true,
+        price: page.properties.Price.number,
 
-  //   const params = {};
-  //   let res = await sanityClient.fetch(query, params);
-
-  //   let posts2 = res.map(generatePost2); // loop over the posts and generate the markdown
-  //   // let posts = res.map(generatePost); // loop over the posts and generate the markdown
-
-  //   //  console.log(`[ posts ]:`, posts );
-  //   //  console.log(`[ res ]:`, res[2] );
-
-  return [
-    {
-      lat: 52.04598746309256,
-      lng: -0.9182846965196778,
-      title: "Wicken Wood Cottage, Leckhampstead Road, Wicken",
-      description: "",
-      price: "£1,050,000",
-      url: "https://www.rightmove.co.uk/properties/128712860#/",
-      imageURL:
-        "https://media.rightmove.co.uk/118k/117145/128712860/117145_1395_HWEB_IMG_00_0000.jpeg",
-    },
-  ];
+        imageURL:
+          page.cover?.external?.url ||
+          "https://assets.savills.com/properties/GBCHRSCHS220131/CHS220131_10_l_gal.jpg",
+        url:
+          page.properties["Estate agent URL"]?.url ||
+          page.properties["Rightmove URL"]?.url,
+      });
+    });
+    console.log(`[ how many houses ]:`, houses.length);
+  } catch (error) {
+    console.log("error!");
+    console.error(error.body);
+  }
+  return houses;
 };
 
 module.exports = getHouses;

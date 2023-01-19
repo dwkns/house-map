@@ -13,14 +13,14 @@ export default defineConfig({
 
   plugins: [
     deskTool(),
-    googleMapsInput({
-      apiKey: 'AIzaSyBFEPMV0tsGi4ZoIEKGDUz8dZyBtvl_Am0',
-      defaultZoom: 9,
-      defaultLocation: {
-        lat: 51.924988636888365,
-        lng: 0.3517860586509959,
-      },
-    }),
+    // googleMapsInput({
+    //   apiKey: 'AIzaSyBFEPMV0tsGi4ZoIEKGDUz8dZyBtvl_Am0',
+    //   defaultZoom: 9,
+    //   defaultLocation: {
+    //     lat: 51.924988636888365,
+    //     lng: 0.3517860586509959,
+    //   },
+    // }),
     // visionTool()
   ],
 
