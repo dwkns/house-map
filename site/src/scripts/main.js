@@ -198,23 +198,23 @@ async function initMap() {
 
     // console.log(`[ marker ]:`, marker);
 
-    marker.addListener("click", (props) => {
-      infoWindow.close();
-      // Create a new InfoWindow.
-      infoWindow.setContent(`
-        <a href="${location.url}" target="_blank">
-          <div class="w-[350px]">
-            <p class="text-xl font-semibold hover:underline">${
-              location.title
-            }</p>
-            <p class="text-lg">${location.price}</p>
-            <p class="py-2">${location.description || ""}</p>
-            <img src="${location.imageURL}" class="object-fill w-full" />
-          </div>
-        </a>`);
+    // marker.addListener("click", (props) => {
+    //   infoWindow.close();
+    //   // Create a new InfoWindow.
+    //   infoWindow.setContent(`
+    //     <a href="${location.url}" target="_blank">
+    //       <div class="w-[350px]">
+    //         <p class="text-xl font-semibold hover:underline">${
+    //           location.title
+    //         }</p>
+    //         <p class="text-lg">${location.price}</p>
+    //         <p class="py-2">${location.description || ""}</p>
+    //         <img src="${location.imageURL}" class="object-fill w-full" />
+    //       </div>
+    //     </a>`);
 
-      infoWindow.open(map, marker);
-    });
+    //   infoWindow.open(map, marker);
+    // });
 
     allHouseMarkers.push(marker);
   });
