@@ -126,12 +126,6 @@ async function initMap() {
       });
 
       let location = mapsMouseEvent.latLng.toJSON();
-      // location["title"] = "Name";
-      // location["description"] = "";
-      // location["price"] = "Price";
-      // location["url"] = "URL";
-      // location["imageURL"] = "image";
-
       let locationString = `${location.lat.toFixed(5)},${location.lng.toFixed(
         5
       )}`;
@@ -179,44 +173,43 @@ async function initMap() {
   markerLocations.forEach((location, index) => {
     var myLatlng = new google.maps.LatLng(location.lat, location.lng);
 
-    const createHouseHTML = (location, size) => {
+    const createMarkerHTML = (location, whichVersion = "marker") => {
       let houseMarkerContainer = document.createElement("div");
-      houseMarkerContainer.className =
-        "p-0.5 speech-bubble bg-blue-800 opacity-80 text-white font-semibold rounded-full";
-      houseMarkerContainer.innerHTML = `
-        <div class="w-8 h-8 flex items-center justify-center">
-         <p class="">${location.number}</p>
+
+      if (whichVersion === "infoWindow") {
+        houseMarkerContainer.className = "";
+        houseMarkerContainer.innerHTML = `
+        <div class="w-96">
+        <p class="font-semibold text-lg">${location.title}</p>
+        <p class="text-base">£${location.price.toLocaleString()}</p>
+        <img src="${location.imageURL}" class="object-fill w-full" />
         </div>`;
-      //  <img src="${location.imageURL}" class="object-fill w-full" />;
+      } else {
+        houseMarkerContainer.className =
+          "p-0.5 speech-bubble bg-blue-800 opacity-80 text-white font-semibold rounded-full";
+        houseMarkerContainer.innerHTML = `
+        <div class="w-20 flex flex-col items-center justify-center">
+        <img src="${location.imageURL}" class="object-fill w-full" />
+        <p class="text-lg">${location.number}</p>
+        </div>`;
+      }
+
       return houseMarkerContainer;
     };
 
     const marker = new google.maps.marker.AdvancedMarkerView({
       map: location.showInFrontEnd ? map : null, // only show markers that are set to show in front end
       position: myLatlng,
-      content: createHouseHTML(location),
-      zIndex: index,
+      content: createMarkerHTML(location),
     });
 
-    // console.log(`[ marker ]:`, marker);
-
-    // marker.addListener("click", (props) => {
-    //   infoWindow.close();
-    //   // Create a new InfoWindow.
-    //   infoWindow.setContent(`
-    //     <a href="${location.url}" target="_blank">
-    //       <div class="w-[350px]">
-    //         <p class="text-xl font-semibold hover:underline">${
-    //           location.title
-    //         }</p>
-    //         <p class="text-lg">${location.price}</p>
-    //         <p class="py-2">${location.description || ""}</p>
-    //         <img src="${location.imageURL}" class="object-fill w-full" />
-    //       </div>
-    //     </a>`);
-
-    //   infoWindow.open(map, marker);
-    // });
+    marker.addListener("click", ({ domEvent, latLng }) => {
+      const { target } = domEvent;
+      infoWindow.close();
+      infoWindow.setPosition(myLatlng);
+      infoWindow.setContent(createMarkerHTML(location, "infoWindow"));
+      infoWindow.open(marker.map, marker);
+    });
 
     allHouseMarkers.push(marker);
   });
