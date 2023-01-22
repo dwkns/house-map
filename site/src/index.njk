@@ -11,6 +11,11 @@ gmApiKey: AIzaSyBFEPMV0tsGi4ZoIEKGDUz8dZyBtvl_Am0
 
 {%- from "_njk_components/components.njk" import component -%} {# Import all
 components optional: ignore missing #} {% markersToScriptTag houses %}
+<script>
+  var ua = window.navigator.userAgent;
+  var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  console.log(`[ iOS ]:`, iOS);
+</script>
 <style>
   .speech-bubble {
     position: relative;

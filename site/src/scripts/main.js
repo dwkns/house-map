@@ -1,8 +1,8 @@
 // Initialize and add the map
 async function initMap() {
   // Start Location for the map
-  const startLatLong = { lat: 51.837129340445784, lng: -0.41132528533835977 };
-  const startZoom = 9;
+  const startLatLong = { lat: 52.07829, lng: 0.51447 };
+  const startZoom = 10;
 
   // Create new map
   const map = new google.maps.Map(document.getElementById("map"), {
@@ -176,18 +176,28 @@ async function initMap() {
     const createMarkerHTML = (location, whichVersion = "marker") => {
       let houseMarkerContainer = document.createElement("div");
 
+      let googleUrlPrefix = "https://google.com/maps";
+      target = "_blank";
+      if (iOS) {
+        googleUrlPrefix = "comgooglemaps://";
+
+        target = "_self";
+      }
+
       if (whichVersion === "infoWindow") {
         houseMarkerContainer.className = "";
         houseMarkerContainer.innerHTML = `
-        <div class="w-96">
+        <div class="w-full max-w-md">
         <div class="flex flex-row justify-between items-center">
           <div>
             <p class="font-semibold text-lg">${location.title}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
           </div>
-          <a href="comgooglemaps://?center=40.765819,-73.975866&zoom=14&views=traffic" class="flex items-center justify-self-end bg-blue-800 font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
+          <a href="${googleUrlPrefix}?saddr=My+Location&daddr=${
+          location.location
+        }" target="${target}" class="flex items-center justify-self-end bg-blue-800 font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
         </div>
-        <img src="${location.imageURL}" class="object-fill w-full" />
+        <img src="${location.imageURL}"  class="object-fill w-full" />
         </div>`;
       } else {
         houseMarkerContainer.className =
@@ -213,6 +223,7 @@ async function initMap() {
       infoWindow.close();
       infoWindow.setPosition(myLatlng);
       infoWindow.setContent(createMarkerHTML(location, "infoWindow"));
+      infoWindow.setZIndex(999);
       infoWindow.open(marker.map, marker);
     });
 
