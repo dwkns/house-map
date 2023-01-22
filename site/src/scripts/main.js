@@ -181,11 +181,13 @@ async function initMap() {
 
     const createHouseHTML = (location, size) => {
       let houseMarkerContainer = document.createElement("div");
-      houseMarkerContainer.className = "p-0.5 speech-bubble shaddow-lg";
+      houseMarkerContainer.className =
+        "p-0.5 speech-bubble bg-blue-800 opacity-80 text-white font-semibold rounded-full";
       houseMarkerContainer.innerHTML = `
-        <div class="w-[75px]">
-          <img src="${location.imageURL}" class="object-fill w-full" />
+        <div class="w-8 h-8 flex items-center justify-center">
+         <p class="">${location.number}</p>
         </div>`;
+      //  <img src="${location.imageURL}" class="object-fill w-full" />;
       return houseMarkerContainer;
     };
 
