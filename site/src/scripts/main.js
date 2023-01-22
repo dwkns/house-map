@@ -180,8 +180,13 @@ async function initMap() {
         houseMarkerContainer.className = "";
         houseMarkerContainer.innerHTML = `
         <div class="w-96">
-        <p class="font-semibold text-lg">${location.title}</p>
-        <p class="text-base">£${location.price.toLocaleString()}</p>
+        <div class="flex flex-row justify-between items-center">
+          <div>
+            <p class="font-semibold text-lg">${location.title}</p>
+            <p class="text-base">£${location.price.toLocaleString()}</p>
+          </div>
+          <a href="comgooglemaps://?center=40.765819,-73.975866&zoom=14&views=traffic" class="flex items-center justify-self-end bg-blue-800 font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
+        </div>
         <img src="${location.imageURL}" class="object-fill w-full" />
         </div>`;
       } else {
