@@ -20,6 +20,7 @@ const getHouses = async function () {
     response.results.forEach((page) => {
       // locations can be a single value or an array of values
       // make them all arrays
+      // console.log(`[ page.properties ]:`, page.properties.Address);
       let location = page.properties.Location.rich_text
         .map((val) => val.plain_text)
         .join("")
@@ -41,6 +42,9 @@ const getHouses = async function () {
           lng: Number(location[1]),
           location: location.join(","),
           description: "",
+          address: page.properties.Address.rich_text
+            .map((val) => val.plain_text)
+            .join(""),
           showInFrontEnd: true,
           price: page.properties.Price.number,
           viewingDate: page.properties["Viewing Date"].date?.start,

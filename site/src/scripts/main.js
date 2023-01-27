@@ -191,6 +191,7 @@ async function initMap() {
           <div>
            <a href="${location.url}" target="_blank">
             <p class="font-semibold text-lg">${location.title}</p>
+            <p class="text-base">${location.address}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
             </a>
           </div>
