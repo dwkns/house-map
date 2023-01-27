@@ -180,7 +180,6 @@ async function initMap() {
       target = "_blank";
       if (iOS) {
         googleUrlPrefix = "comgooglemaps://";
-
         target = "_self";
       }
 
@@ -197,7 +196,9 @@ async function initMap() {
           location.location
         }" target="${target}" class="flex items-center justify-self-end bg-blue-800 font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
         </div>
-        <img src="${location.imageURL}"  class="object-fill w-full" />
+        <a href="${location.url}" target="_blank"><img src="${
+          location.imageURL
+        }"  class="object-fill w-full" /></a>
         </div>`;
       } else {
         houseMarkerContainer.className =

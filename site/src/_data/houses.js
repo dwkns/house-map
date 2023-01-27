@@ -25,9 +25,13 @@ const getHouses = async function () {
         .join("")
         .split(",");
       if (
-        !["Sold STC", "Taken off market"].includes(
-          page.properties.Status.select.name
-        )
+        ![
+          "Sold STC",
+          "Taken off market",
+          "Not Interested",
+          "On Hold",
+          "In Queue",
+        ].includes(page.properties?.Status?.select?.name)
       ) {
         houses.push({
           title: page.properties.Name.title
@@ -40,13 +44,16 @@ const getHouses = async function () {
           showInFrontEnd: true,
           price: page.properties.Price.number,
           viewingDate: page.properties["Viewing Date"].date?.start,
-
+          colour:
+            page.properties?.Status?.select?.name == "On Hold"
+              ? "grey"
+              : "blue",
           imageURL:
             page.cover?.external?.url ||
             "https://assets.savills.com/properties/GBCHRSCHS220131/CHS220131_10_l_gal.jpg",
           url:
-            page.properties["Estate agent URL"]?.url ||
-            page.properties["Rightmove URL"]?.url,
+            page.properties["Rightmove URL"]?.url ||
+            page.properties["Estate agent URL"]?.url,
         });
       }
     });
@@ -63,7 +70,7 @@ const getHouses = async function () {
 
     // console.log(`[ houses ]:`, houses);
   } catch (error) {
-    console.log("error!");
+    console.log("Error! in the call to the Notion API");
     console.error(error.body);
   }
   return houses;
