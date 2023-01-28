@@ -3,6 +3,9 @@ const fetch = require("node-fetch");
 require("dotenv").config();
 
 const getHouses = async function () {
+  const andover = "51.210819198888764, -1.481561776063715";
+  const norwich = "52.62183610081735, 1.3086142996577774";
+
   // create client
   const notion = new Client({
     auth: process.env.NOTION_TOKEN,
@@ -51,8 +54,8 @@ const getHouses = async function () {
           showInFrontEnd: true,
           price: page.properties.Price.number,
           viewingDate: page.properties["Viewing Date"].date?.start,
-          // distToAndover: drivingTimeToAndover,
-          // distToNorwich: "drivingTimeToNorwhichFc",
+          andover: andover,
+          norwich: norwich,
           colour:
             page.properties?.Status?.select?.name == "On Hold"
               ? "grey"
@@ -87,9 +90,6 @@ const getHouses = async function () {
     };
 
     for await (let house of houses) {
-      const andover = "51.210819198888764, -1.481561776063715";
-      const norwich = "52.62183610081735, 1.3086142996577774";
-
       house.drivingTimeToAndover = await getTimeToLocation(
         house.location,
         andover

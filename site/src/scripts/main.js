@@ -84,7 +84,7 @@ async function initMap() {
 
   const allHouseMarkers = [];
 
-  console.log(`[ markerLocations ]:`, markerLocations);
+  // console.log(`[ markerLocations ]:`, markerLocations);
 
   markerLocations.forEach((location, index) => {
     var myLatlng = new google.maps.LatLng(location.lat, location.lng);
@@ -102,18 +102,25 @@ async function initMap() {
       if (whichVersion === "infoWindow") {
         houseMarkerContainer.className = "";
         houseMarkerContainer.innerHTML = `
-        <div class="w-full max-w-md">
-        <div class="flex flex-row justify-between items-center">
+        <div class="w-full max-w-lg">
+        <div class="flex flex-row justify-between ">
           <div>
            <a href="${location.url}" target="_blank">
             <p class="font-semibold text-lg">${location.title}</p>
             <p class="text-base">${location.address}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
-            <p class="text-base"><span class="font-semibold">Andover:</span> ${
-              location.drivingTimeToAndover
-            }, <span class="font-semibold">Norwich:</span> ${
+            <p class="text-base">
+            <a href="${googleUrlPrefix}?saddr=${location.location}&daddr=${
+          location.andover
+        }&travelmode=driving" target="_blank" ><span class="font-semibold">Andover:</span> ${
+          location.drivingTimeToAndover
+        }</a>,
+               <a href="${googleUrlPrefix}?saddr=${location.location}&daddr=${
+          location.norwich
+        }&travelmode=driving" target="_blank" ><span class="font-semibold">Norwich:</span> ${
           location.drivingTimeToNorwich
-        }</p>
+        }</a>,
+            </p>
             </a>
           </div>
           <a href="${googleUrlPrefix}?saddr=Current+Location&daddr=${
