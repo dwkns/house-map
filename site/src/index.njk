@@ -35,12 +35,29 @@ components optional: ignore missing #} {% markersToScriptTag houses %}
     margin-left: -0.781em;
     margin-bottom: -0.781em;
   }
+
+  .custom-map-control-button {
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px #0000004d;
+    cursor: pointer;
+    font: 400 18px Roboto, Arial, sans-serif;
+    height: 40px;
+    margin: 10px;
+    overflow: hidden;
+    padding: 0 0.5em;
+  }
+
+  .custom-map-control-button:hover {
+    background: #ebebeb;
+  }
 </style>
 <section class="flex flex-col h-screen">
   <div class="flex justify-center gap-12 p-2 items center">
     <input
-      id="pac-input"
-      class="w-1/3 px-4 border border-gray-300 rounded-md"
+      id="map-search-box"
+      class="w-full px-4 border border-gray-300 rounded-md lg:w-1/2"
       type="text"
       placeholder="Search Map"
     />
