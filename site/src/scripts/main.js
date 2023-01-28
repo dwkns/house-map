@@ -109,6 +109,11 @@ async function initMap() {
             <p class="font-semibold text-lg">${location.title}</p>
             <p class="text-base">${location.address}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
+            <p class="text-base"><span class="font-semibold">Andover:</span> ${
+              location.drivingTimeToAndover
+            }, <span class="font-semibold">Norwich:</span> ${
+          location.drivingTimeToNorwich
+        }</p>
             </a>
           </div>
           <a href="${googleUrlPrefix}?saddr=Current+Location&daddr=${

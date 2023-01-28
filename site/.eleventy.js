@@ -1,7 +1,7 @@
 const { logToConsole } = require("dwkns-eleventy-plugins");
 const util = require("util");
 
-const sanityClient = require("./src/_data/_sanityClient.js");
+// const sanityClient = require("./src/_data/_sanityClient.js");
 module.exports = (eleventyConfig) => {
   eleventyConfig.addPlugin(logToConsole, {
     logToHtml: false,

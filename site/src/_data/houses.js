@@ -1,4 +1,6 @@
 const { Client } = require("@notionhq/client");
+const fetch = require("node-fetch");
+require("dotenv").config();
 
 const getHouses = async function () {
   // create client
@@ -17,7 +19,7 @@ const getHouses = async function () {
 
     // loop through the results
     // add each result to the houses array
-    response.results.forEach((page) => {
+    response.results.forEach(async (page) => {
       // locations can be a single value or an array of values
       // make them all arrays
       // console.log(`[ page.properties ]:`, page.properties.Address);
@@ -25,6 +27,7 @@ const getHouses = async function () {
         .map((val) => val.plain_text)
         .join("")
         .split(",");
+
       if (
         ![
           "Sold STC",
@@ -48,6 +51,8 @@ const getHouses = async function () {
           showInFrontEnd: true,
           price: page.properties.Price.number,
           viewingDate: page.properties["Viewing Date"].date?.start,
+          // distToAndover: drivingTimeToAndover,
+          // distToNorwich: "drivingTimeToNorwhichFc",
           colour:
             page.properties?.Status?.select?.name == "On Hold"
               ? "grey"
@@ -71,6 +76,29 @@ const getHouses = async function () {
     houses.forEach((house, index) => {
       house.number = index + 1;
     });
+
+    const getTimeToLocation = async (origin, destination) => {
+      const res = await fetch(
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.GOOGLE_MAPS_API_KEY}`
+      );
+      const resJson = await res.json();
+      const timeToLocation = resJson.routes[0].legs[0].duration.text;
+      return timeToLocation;
+    };
+
+    for await (let house of houses) {
+      const andover = "51.210819198888764, -1.481561776063715";
+      const norwich = "52.62183610081735, 1.3086142996577774";
+
+      house.drivingTimeToAndover = await getTimeToLocation(
+        house.location,
+        andover
+      );
+      house.drivingTimeToNorwich = await getTimeToLocation(
+        house.location,
+        norwich
+      );
+    }
 
     // console.log(`[ houses ]:`, houses);
   } catch (error) {
