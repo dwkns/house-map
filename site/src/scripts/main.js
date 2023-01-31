@@ -99,6 +99,16 @@ async function initMap() {
         target = "_self";
       }
 
+      let date = new Date(location.viewingDate).toLocaleDateString("en-gb", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+
+      let time = new Date(location.viewingDate).toLocaleTimeString("en-gb", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       if (whichVersion === "infoWindow") {
         houseMarkerContainer.className = "";
         houseMarkerContainer.innerHTML = `
@@ -109,6 +119,7 @@ async function initMap() {
             <p class="font-semibold text-lg">${location.title}</p>
             <p class="text-base">${location.address}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
+            <p class="text-base"><span class="font-semibold">Viewing:</span> <span class="">${time}</span> on ${date}</p>
             <p class="text-base">
             <a href="${googleUrlPrefix}?saddr=${location.location}&daddr=${
           location.andover

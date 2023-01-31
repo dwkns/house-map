@@ -32,13 +32,9 @@ const getHouses = async function () {
         .split(",");
 
       if (
-        ![
-          "Sold STC",
-          "Taken off market",
-          "Not Interested",
-          "On Hold",
-          "In Queue",
-        ].includes(page.properties?.Status?.select?.name)
+        ["Viewing Confirmed", "Asked for Viewing"].includes(
+          page.properties?.Status?.select?.name
+        )
       ) {
         houses.push({
           title: page.properties.Name.title
