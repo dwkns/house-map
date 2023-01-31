@@ -70,9 +70,31 @@ components optional: ignore missing #} {% markersToScriptTag houses %}
       type="text"
       placeholder="Search Map"
     />
+
+    <button
+      type="submit"
+      id="rebuild-site"
+      class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+    >
+      <span> Get latest data </span>
+    </button>
+    <script>
+      document
+        .getElementById("rebuild-site")
+        .addEventListener("click", function () {
+          fetch(
+            "https://api.netlify.com/build_hooks/63ce5da23d29573be9813b94",
+            {
+              method: "POST",
+            }
+          ).then(function (response) {
+            console.log(response);
+          });
+        });
+    </script>
   </div>
-  <div id="map" class="flex items-center justify-center flex-grow bg-green-400">
-    this content is not centered on screen
+  <div id="map" class="flex items-center justify-center flex-grow">
+    Loading map...(or something has gone badly wrong)
   </div>
 </section>
 {#
