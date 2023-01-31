@@ -25,7 +25,15 @@ const getHouses = async function () {
     response.results.forEach(async (page) => {
       // locations can be a single value or an array of values
       // make them all arrays
-      // console.log(`[ page.properties ]:`, page.properties.Address);
+      // console.log(
+      //   `[ page.properties ]:`,
+      //   page.properties["Estate Agents"].relation
+      // );
+
+      // let estateAgentRelationId = page.properties["Estate Agents"]?.relation[0];
+
+      // console.log(`[ estateAgentRelationId ]:`, estateAgentRelationId);
+
       let location = page.properties.Location.rich_text
         .map((val) => val.plain_text)
         .join("")
@@ -48,6 +56,7 @@ const getHouses = async function () {
             .map((val) => val.plain_text)
             .join(""),
           showInFrontEnd: true,
+          // shownBy: page.properties["Shown By"].rich_text
           price: page.properties.Price.number,
           viewingDate: page.properties["Viewing Date"].date?.start,
           andover: andover,
