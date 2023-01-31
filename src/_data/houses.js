@@ -11,6 +11,9 @@ const getHouses = async function () {
     auth: process.env.NOTION_TOKEN,
   });
 
+  // get the viewing date from notion or set it to far in the future
+  let farFuture = new Date("01/01/2029").toISOString();
+
   let houses = [];
   // call the Notion API
   try {
@@ -39,8 +42,11 @@ const getHouses = async function () {
         .join("")
         .split(",");
 
+      let viewingDateString =
+        page.properties["Viewing Date"].date?.start || farFuture;
+
       if (
-        ["Viewing Confirmed", "Asked for Viewing"].includes(
+        ["Viewing Confirmed", "Asked for Viewing", "In Queue"].includes(
           page.properties?.Status?.select?.name
         )
       ) {
@@ -58,16 +64,14 @@ const getHouses = async function () {
           showInFrontEnd: true,
           // shownBy: page.properties["Shown By"].rich_text
           price: page.properties.Price.number,
-          viewingDate: page.properties["Viewing Date"].date?.start,
+          viewingDate: viewingDateString,
           andover: andover,
           norwich: norwich,
           colour:
-            page.properties?.Status?.select?.name == "On Hold"
+            page.properties?.Status?.select?.name == "Viewing Confirmed"
               ? "grey"
               : "blue",
-          imageURL:
-            page.cover?.external?.url ||
-            "https://assets.savills.com/properties/GBCHRSCHS220131/CHS220131_10_l_gal.jpg",
+          imageURL: page.cover?.external?.url || "/images/house.png",
           url:
             page.properties["Rightmove URL"]?.url ||
             page.properties["Estate agent URL"]?.url,
@@ -81,9 +85,18 @@ const getHouses = async function () {
       return new Date(a.viewingDate) - new Date(b.viewingDate);
     });
 
+    // add a number to each house
+    // but only if it doesn't have a viewing date in the far future
+    let houseNumber = 1;
     houses.forEach((house, index) => {
-      house.number = index + 1;
+      if (house.viewingDate != farFuture) {
+        house.number = houseNumber;
+        houseNumber++;
+      }
     });
+
+    // so number 1 is at thte top of the list
+    houses.reverse();
 
     const getTimeToLocation = async (origin, destination) => {
       const res = await fetch(

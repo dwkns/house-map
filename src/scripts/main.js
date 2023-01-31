@@ -109,6 +109,19 @@ async function initMap() {
         hour: "2-digit",
         minute: "2-digit",
       });
+
+      let number = location.number ? location.number : "";
+      let colour =
+        location.colour != "blue" ? "opacity-80 bg-blue-800" : "bg-gray-300";
+      let btColour =
+        location.colour != "blue" ? "speech-bubble-blue" : "speech-bubble-gray";
+
+      let viewingDetails = `<p class="text-base"><span class="font-semibold">Viewing:</span> <span class="">${time}</span> on ${date}</p>`;
+
+      if (location.viewingDate == farFuture) {
+        viewingDetails = "";
+      }
+
       if (whichVersion === "infoWindow") {
         houseMarkerContainer.className = "";
         houseMarkerContainer.innerHTML = `
@@ -119,7 +132,7 @@ async function initMap() {
             <p class="font-semibold text-lg">${location.title}</p>
             <p class="text-base">${location.address}</p>
             <p class="text-base">£${location.price.toLocaleString()}</p>
-            <p class="text-base"><span class="font-semibold">Viewing:</span> <span class="">${time}</span> on ${date}</p>
+            ${viewingDetails}
             <p class="text-base">
             <a href="${googleUrlPrefix}?saddr=${location.location}&daddr=${
           location.andover
@@ -136,19 +149,18 @@ async function initMap() {
           </div>
           <a href="${googleUrlPrefix}?saddr=Current+Location&daddr=${
           location.location
-        }&travelmode=driving" target="${target}" class="flex items-center justify-self-end bg-blue-800 font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
+        }&travelmode=driving" target="${target}" class="flex items-center justify-self-end ${colour} font-semibold text-white rounded px-2 h-8"><p class="">Directions</p></a>
         </div>
         <a href="${location.url}" target="_blank"><img src="${
           location.imageURL
         }"  class="object-fill w-full" /></a>
         </div>`;
       } else {
-        houseMarkerContainer.className =
-          "p-0.5 speech-bubble bg-blue-800 opacity-80 text-white font-semibold rounded-full";
+        houseMarkerContainer.className = `p-0.5 speech-bubble ${colour} ${btColour} text-white font-semibold rounded-full `;
         houseMarkerContainer.innerHTML = `
         <div class="w-20 flex flex-col items-center justify-center">
         <img src="${location.imageURL}" class="object-fill w-full" />
-        <p class="text-lg">${location.number}</p>
+        <p class="text-lg min-h-[1.5rem]">${number}</p>
         </div>`;
       }
 

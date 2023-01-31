@@ -14,6 +14,7 @@ components optional: ignore missing #} {% markersToScriptTag houses %}
 <script>
   var ua = window.navigator.userAgent;
   var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  let farFuture = new Date("01/01/2029").toISOString();
   // console.log(`[ iOS ]:`, iOS);
 </script>
 <style>
@@ -30,10 +31,18 @@ components optional: ignore missing #} {% markersToScriptTag houses %}
     width: 0;
     height: 0;
     border: 0.781em solid transparent;
-    border-top-color: rgb(30 64 175);
+
     border-bottom: 0;
     margin-left: -0.781em;
     margin-bottom: -0.781em;
+  }
+
+  .speech-bubble-blue:after {
+    border-top-color: rgb(30 64 175);
+  }
+
+  .speech-bubble-gray:after {
+    border-top-color: rgb(209 213 219);
   }
 
   .custom-map-control-button {
