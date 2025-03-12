@@ -27,7 +27,7 @@
   "scripts": {
     "clean": "rimraf dist build",
     "start": "npm-run-all clean -p dev:* ",
-    "dev": "npm-run-all clean -s dev:* ",
+    "dev": "npm-run-all clean -p dev:* ",
     "dev:postcss": "TAILWIND_MODE=watch NODE_ENV=development postcss ./src/styles/main.css -o ./src/styles/compiled.css --watch",
     "dev:esbuild": "NODE_ENV=development esbuild src/scripts/main.js --bundle --watch --outfile=dist/scripts/main.js",
     "dev:eleventy": "NODE_ENV=development eleventy --serve --quiet",
